@@ -17,7 +17,7 @@
 <script>
     export default {
         mounted() {
-            console.log('Example Component mounted.')
+            console.log('Example Component mounted. after push up on heroku')
         }
     }
 </script>
