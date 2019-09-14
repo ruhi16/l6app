@@ -4,23 +4,18 @@ import Vue from 'vue';
 // window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
+import {routes} from './routes';
+
 
 Vue.use(VueRouter);
-import Example from './components/ExampleComponent.vue';
+
 // const Example = require('./components/ExampleComponent.vue');
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 
-
-const routes = [
-    {
-        path:'/example',
-        component: Example
-    }
-];
-
 const router = new VueRouter({
-    routes
+    routes,
+    mode:'history'  //mode: 'hash'
 });
 
 const app = new Vue({

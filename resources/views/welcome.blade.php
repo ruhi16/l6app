@@ -76,6 +76,7 @@
                             @endif
                             {{--  <a href="#">Test Link</a>  --}}
                             <router-link to="/example">Example Link</router-link>
+                            <router-link to="/sample">Sample Link</router-link>
                         @endauth
                     </div>
                 @endif    
