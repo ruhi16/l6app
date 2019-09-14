@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -80,12 +80,12 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'url' => env('DATABASE_URL', 'postgres://nvimyrwtvjvmaq:a88c0e9f971406f95859d67facfc236c0aeee7826e771da38778abda3226bec2@ec2-174-129-27-158.compute-1.amazonaws.com:5432/dceriukcpu10dv'),
+            'host' => env('DB_HOST', 'ec2-174-129-27-158.compute-1.amazonaws.com'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'dceriukcpu10dv'),
+            'username' => env('DB_USERNAME', 'nvimyrwtvjvmaq'),
+            'password' => env('DB_PASSWORD', 'a88c0e9f971406f95859d67facfc236c0aeee7826e771da38778abda3226bec2'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
