@@ -5,10 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        {{-- <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet"> --}}
+        
         <link href="{{ asset('css/app.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('css/material-icons.min.css') }}" />
        <style>
            html, body {
                 background-color: #fff;
@@ -19,7 +23,7 @@
                 margin: 0;
             }
            .full-height {
-                height: 100vh;
+                height: 10vh;
             }
 
             .flex-center {
