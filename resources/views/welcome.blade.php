@@ -6,11 +6,9 @@
 
         <title>Laravel</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         {{-- <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet"> --}}
-        
         <link href="{{ asset('css/app.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/material-icons.min.css') }}" />
        <style>
@@ -19,7 +17,7 @@
                 color: #636b6f;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
-                height: 100vh;
+                height: 10vh;
                 margin: 0;
             }
            .full-height {
@@ -67,6 +65,7 @@
     </head>
     <body>
         <div id="app">
+            
             <div class="flex-center position-ref full-height">
                 @if (Route::has('login'))
                     <div class="top-right links">
