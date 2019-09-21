@@ -1,16 +1,7 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Sample Component, test</div>
-
-                    <div class="card-body">
-                        I'm an sample component. This is my first Vue Js Task
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div>
+        <h1>This is test for Vuetify Toolbar</h1>
+        <h3>Sample Component</h3>
     </div>
 </template>
 

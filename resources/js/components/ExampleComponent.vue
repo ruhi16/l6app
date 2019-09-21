@@ -1,30 +1,45 @@
 <template>
     <div>
+     
     <h1>This is test for Vuetify Toolbar</h1>
-    <p class="font-weight-black">Black text.</p>
-    <p class="font-weight-bold">Bold text.</p>
-    <p class="font-weight-medium">Medium weight text.</p>
-    <p class="font-weight-regular">Normal weight text.</p>
-    <p class="font-weight-light">Light weight text.</p>
-    <p class="font-weight-thin">Thin weight text.</p>
-    <p class="font-italic">Italic text.</p>
-    <!-- <span class="material-icons">face</span> -->
+    <h3>Example Component</h3>  
+
+    <p class="red white--text">lorem ipsum  dolor ist, amet consectetur adipisicing elit. Eque unde dolorem ilo pratcisumn</p>
+    <v-btn class="pink white--text">Click Me <v-icon right small>email</v-icon></v-btn>
+
+    <v-btn fab depressed large dark color="purple">
+        <v-icon>favorite</v-icon>
+    </v-btn>
+    
+    <v-row justify="space-around">
+    <v-icon>mdi-anchor</v-icon>
+
+    <v-icon>mdi-xbox-controller</v-icon>
+
+    <v-icon>mdi-watch</v-icon>
+
+    <v-icon>mdi-tilde</v-icon>
+
+    <v-icon>mdi-tennis</v-icon>
+
+    <v-icon>mdi-mouse</v-icon>
+    </v-row>
+  <!-- <br>
+    <v-spacer></v-spacer>
     <v-alert type="success">
       I'm a success alert.
     </v-alert>
 
     <v-alert type="info">
       I'm an info alert.
-    </v-alert>
+    </v-alert> -->
+    
+    <!-- <span class="material-icons">face</span> -->
+    <!-- <v-icon>mdi-anchor</v-icon> -->
+    
 
-    <v-alert type="warning">
-      I'm a warning alert.
-    </v-alert>
-
-    <v-alert type="error">
-      I'm an error alert.
-    </v-alert>
     </div>
+    
 </template>
 
 <script>
