@@ -24,14 +24,15 @@
             {{-- <v-app color="grey" dark> --}}
                 {{-- <nav-bar></nav-bar> --}}
                 <Navbar></Navbar>
+                
 
 
                 <router-link to="/example">Example Link</router-link>
-                <router-link to="/sample">Sample Link</router-link>
-                                                       
+                <router-link to="/sample">Sample Link</router-link>                                                     
           
             
                 <router-view></router-view>
+                <Carousel></Carousel>
             </v-app>
             
         </div>

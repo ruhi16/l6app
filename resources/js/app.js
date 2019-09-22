@@ -6,8 +6,10 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {routes} from './routes'; // import the defined object routes, from ./routes.js file
 import vuetify from './vuetify';
+import store from './stores/store'
 
 import Navbar from './components/Navbar.vue';
+import Carousel from './components/carousel';
 
 
 Vue.use(VueRouter);
@@ -23,8 +25,10 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
+    store,
     components:{
-        Navbar  //'nav-bar' : Navbar,  then tag will be <nav-bar />> in welcome.blade.php
+        Navbar,  //'nav-bar' : Navbar,  then tag will be <nav-bar />> in welcome.blade.php
+        Carousel
     },
     vuetify,
     router,

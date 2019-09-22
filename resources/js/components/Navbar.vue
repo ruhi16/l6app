@@ -17,23 +17,20 @@
         
     <!-- <v-card color="grey lighten-4" flat height="200px" tile> -->
 
-    <v-toolbar dense>
-        <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
-        <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-toolbar dense float>
+        <v-app-bar-nav-icon class="grey--text hidden-md-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
+
         <v-toolbar-title>Title</v-toolbar-title>
         
-        <v-spacer></v-spacer>
-       
+        <v-spacer></v-spacer>       
 
         <v-toolbar-items>
-            <v-btn text>Link 1</v-btn>
+            <v-btn text >Link 1</v-btn>
             <v-btn text>Link 2</v-btn>
             <v-btn text>Link 3</v-btn>
         </v-toolbar-items>
-        <v-btn icon>
-            <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
-        <!-- <template v-if="$vuetify.breakpoint.smAndUp">
+        
+        <template v-if="$vuetify.breakpoint.mdAndUp">
             <v-btn icon>
                 <v-icon>mdi-export-variant</v-icon>
             </v-btn>
@@ -43,11 +40,15 @@
             <v-btn icon>
                 <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
-        </template> -->
+        </template>
+
+        <v-btn icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
 
         </v-toolbar>
     <!-- </v-card> -->
-        <v-navigation-drawer  app v-model="drawer">
+        <v-navigation-drawer temporary app v-model="drawer">
             <v-list-item>
                 <v-list-item-content>
                     <v-list-item-title class="title">
@@ -73,9 +74,7 @@
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-        <!-- <v-navigation-drawer app v-model="drawer" class="indigo">
-            <p>Test</p>
-        </v-navigation-drawer> -->
+        
     </nav>
 </template>
 
