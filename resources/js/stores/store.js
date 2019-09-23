@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state:{
-        msg:'Hello this is from vuex',
+        message:'Hello this is from vuex',
         users: [
             {id:1, name:'Hari Narayan', age: 40},
             {id:2, name:'Ayantika', age: 7},
@@ -13,10 +13,12 @@ const store = new Vuex.Store({
         ]
     },
     mutations:{
-        updateMessageMutation(state){
-            
-            state.msg = "Vuex updated message from Mutations.";
-            console.log('Sample Component mounted mutations: '+state.msg);
+        updateMessageMutation(state){            
+            state.message = "Vuex updated message from Mutations.";
+            console.log('Sample Component mounted mutations: ' + state.message);
+        },
+        addUser(state, payload){
+            state.users.push(payload);
         }
     },
     actions:{
@@ -27,7 +29,7 @@ const store = new Vuex.Store({
     },
     getters:{
         getUsers(state){
-            return state.users.filter(user =>user.age < 40);
+            return state.users.filter(user =>user.age > 0);
 
         }
     }

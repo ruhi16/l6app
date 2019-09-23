@@ -4,31 +4,41 @@
         <h3>Sample Component <small>{{ msg }}</small></h3>
         <v-btn @click="updateMessage">Update Message</v-btn>
         <ul>
-            <li v-for="user in getUsers" :key="user.id">{{ user.name}}</li>
+            <li v-for="user in users" :key="user.id">{{ user.name}}</li>
         </ul>
+        <v-btn @click="addUser({id: 4, name: 'Pradip Kumar', age: 70})">Add User</v-btn>
     </div>
 </template>
 
 <script>
+    import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+    
     export default {
         data(){
-            return{}
+            return{
 
+            }
         },
         computed: {
-            msg() { 
-                return this.$store.state.msg
-            },
-            getUsers(){
-                return this.$store.getters.getUsers;
-            }
+            ...mapState({ msg: 'message' }),
+            ...mapGetters({users: 'getUsers'})
         },
-        methods: {
-            // console.log('Sample Component mounted.');
-            updateMessage () {
-                // console.log('Sample Component button clicked.');
-                this.$store.dispatch('updateMessageAction');
-            }
+        // computed: {
+        //     msg() { 
+        //         return this.$store.state.msg
+        //     },
+        //     getUsers(){
+        //         return this.$store.getters.getUsers;
+        //     }
+        // },
+        // methods: {
+        //     updateMessage () {                
+        //         this.$store.dispatch('updateMessageAction');
+        //     }
+        // }
+        methods:{
+            ...mapActions({ updateMessage: 'updateMessageAction'}),
+            ...mapMutations(["addUser"])
         }
     }
 </script>

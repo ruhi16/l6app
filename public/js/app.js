@@ -2099,6 +2099,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2110,25 +2117,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
   },
-  computed: {
-    msg: function msg() {
-      return this.$store.state.msg;
-    },
-    getUsers: function getUsers() {
-      return this.$store.getters.getUsers;
-    }
-  },
-  methods: {
-    // console.log('Sample Component mounted.');
-    updateMessage: function updateMessage() {
-      // console.log('Sample Component button clicked.');
-      this.$store.dispatch('updateMessageAction');
-    }
-  }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    msg: 'message'
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    users: 'getUsers'
+  })),
+  // computed: {
+  //     msg() { 
+  //         return this.$store.state.msg
+  //     },
+  //     getUsers(){
+  //         return this.$store.getters.getUsers;
+  //     }
+  // },
+  // methods: {
+  //     updateMessage () {                
+  //         this.$store.dispatch('updateMessageAction');
+  //     }
+  // }
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
+    updateMessage: 'updateMessageAction'
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(["addUser"]))
 });
 
 /***/ }),
@@ -38504,10 +38519,22 @@ var render = function() {
       _vm._v(" "),
       _c(
         "ul",
-        _vm._l(_vm.getUsers, function(user) {
+        _vm._l(_vm.users, function(user) {
           return _c("li", { key: user.id }, [_vm._v(_vm._s(user.name))])
         }),
         0
+      ),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        {
+          on: {
+            click: function($event) {
+              return _vm.addUser({ id: 4, name: "Pradip Kumar", age: 70 })
+            }
+          }
+        },
+        [_vm._v("Add User")]
       )
     ],
     1
@@ -91614,7 +91641,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    msg: 'Hello this is from vuex',
+    message: 'Hello this is from vuex',
     users: [{
       id: 1,
       name: 'Hari Narayan',
@@ -91631,8 +91658,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   },
   mutations: {
     updateMessageMutation: function updateMessageMutation(state) {
-      state.msg = "Vuex updated message from Mutations.";
-      console.log('Sample Component mounted mutations: ' + state.msg);
+      state.message = "Vuex updated message from Mutations.";
+      console.log('Sample Component mounted mutations: ' + state.message);
+    },
+    addUser: function addUser(state, payload) {
+      state.users.push(payload);
     }
   },
   actions: {
@@ -91644,7 +91674,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   getters: {
     getUsers: function getUsers(state) {
       return state.users.filter(function (user) {
-        return user.age < 40;
+        return user.age > 0;
       });
     }
   }
