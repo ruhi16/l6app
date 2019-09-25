@@ -29,10 +29,10 @@
 
                 <router-link to="/example">Example Link</router-link>
                 <router-link to="/sample">Sample Link</router-link>                                                     
-          
+                <router-link to="/registeruser">Register User</router-link>   
             
                 <router-view></router-view>
-                <Carousel></Carousel>
+                {{-- <Carousel></Carousel> --}}
             </v-app>
             
         </div>

@@ -1,5 +1,6 @@
 import Example from './components/ExampleComponent.vue';
 import Sample from './components/SampleComponent.vue';
+import Register from './components/Register'
 
 
 export const routes = [{
@@ -9,5 +10,9 @@ export const routes = [{
     {
         path: '/sample',
         component: Sample
+    },
+    {
+        path: '/registeruser',
+        component: Register
     }
 ];

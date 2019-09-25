@@ -4,7 +4,7 @@
     <h1>This is test for Vuetify Toolbar</h1>
     <h3>Example Component</h3>  
 
-    <p class="red white--text">lorem ipsum  dolor ist, amet consectetur adipisicing elit. Eque unde dolorem ilo pratcisumn</p>
+    <!-- <p class="red white--text">lorem ipsum  dolor ist, amet consectetur adipisicing elit. Eque unde dolorem ilo pratcisumn</p>
     <v-btn class="pink white--text">Click Me <v-icon right small>email</v-icon></v-btn>
 
     <v-btn fab depressed large dark color="purple">
@@ -18,7 +18,7 @@
       <v-icon>mdi-tilde</v-icon>
       <v-icon>mdi-tennis</v-icon>
       <v-icon>mdi-mouse</v-icon>
-    </v-row>
+    </v-row> -->
   <!-- <br>
     <v-spacer></v-spacer>
     <v-alert type="success">
