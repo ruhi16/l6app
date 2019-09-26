@@ -6,13 +6,16 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {routes} from './routes'; // import the defined object routes, from ./routes.js file
 import vuetify from './vuetify';
-import store from './stores/store'
+import store from './stores/store';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 
 import Navbar from './components/Navbar.vue';
 import Carousel from './components/carousel';
 
 
 Vue.use(VueRouter);
+Vue.use(VueAxios, axios);
 
 // const Example = require('./components/ExampleComponent.vue');
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);

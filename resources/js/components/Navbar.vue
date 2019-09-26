@@ -25,9 +25,11 @@
         <v-spacer></v-spacer>       
 
         <v-toolbar-items>
-            <v-btn text >Link 1</v-btn>
-            <v-btn text>Link 2</v-btn>
-            <v-btn text>Link 3</v-btn>
+            <v-btn text :to="{path:'/example'}">Example</v-btn>
+            <v-btn text :to="{path:'/sample'}">Sample</v-btn>
+            <v-btn text :to="{path:'/register'}">Register</v-btn>
+            <v-btn text :to="{path:'/register'}">User</v-btn>
+            <v-btn text :to="{path:'/form1'}">Form1</v-btn>
         </v-toolbar-items>
         
         <template v-if="$vuetify.breakpoint.mdAndUp">

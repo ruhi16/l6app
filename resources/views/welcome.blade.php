@@ -3,13 +3,14 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
 
         <title>Laravel</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Fonts -->
-        {{-- <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet"> --}}
-        {{-- <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet"> --}}
+        {{-- <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet"> --}}
 
         <link rel="stylesheet" href="{{ asset('css/material-icons.css') }}" />
 
@@ -27,10 +28,13 @@
                 
 
 
-                <router-link to="/example">Example Link</router-link>
+                {{-- <router-link to="/example">Example Link</router-link>
                 <router-link to="/sample">Sample Link</router-link>                                                     
                 <router-link to="/registeruser">Register User</router-link>   
-            
+                <router-link to="/users">User</router-link>   
+                <router-link to="/form1">Form1</router-link>   --}}
+
+
                 <router-view></router-view>
                 {{-- <Carousel></Carousel> --}}
             </v-app>
