@@ -29,7 +29,7 @@
             <v-btn text :to="{path:'/sample'}">Sample</v-btn>
             <v-btn text :to="{path:'/register'}">Register</v-btn>
             <v-btn text :to="{path:'/register'}">User</v-btn>
-            <v-btn text :to="{path:'/form1'}">Form1</v-btn>
+            <v-btn text :to="{path:'/login'}">Login</v-btn>
         </v-toolbar-items>
         
         <template v-if="$vuetify.breakpoint.mdAndUp">

@@ -2,7 +2,7 @@ import Example from './components/ExampleComponent.vue';
 import Sample from './components/SampleComponent.vue';
 import Register from './components/Register';
 import Users from './components/Users';
-import Form1 from './components/Form1';
+import Login from './components/Login';
 
 
 export const routes = [{
@@ -22,7 +22,7 @@ export const routes = [{
         component: Users
     },
     {
-        path: '/form1',
-        component: Form1
+        path: '/login',
+        component: Login
     }
 ];

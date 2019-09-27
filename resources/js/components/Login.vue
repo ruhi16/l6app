@@ -24,13 +24,13 @@
                 
                 <v-card-text>
 
-                  <v-text-field
+                  <!-- <v-text-field
                     v-model="name"
                     :counter="10"
                     :rules="nameRules"
                     label="Name"
                     required
-                  ></v-text-field>
+                  ></v-text-field> -->
                   
 
 
@@ -76,13 +76,21 @@
                     Reset Validation
                   </v-btn>
 
-                  <v-btn
+                  <v-btn                    
                     :disabled="!valid"
                     color="success"
                     class="mr-4"
                     @click="validate"
                   >
                     Register
+                  </v-btn>
+
+                  <v-btn                    
+                    color="info"
+                    class="mr-4"
+                    @click="getLoginInfo"
+                  >
+                    Login Info
                   </v-btn>
 
             </v-card-actions>
@@ -109,16 +117,17 @@
 <script>
   export default {
     data: () => ({
+      config: { },
+      uri : 'http://localhost:8000/api/auth',
       valid: true,
       show:false,
       snackbar:false,
 
-      name: '',
-      
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-      ],
+      // name: '',      
+      // nameRules: [
+      //   v => !!v || 'Name is required',
+      //   v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+      // ],
 
       email: '',
       emailRules: [
@@ -138,56 +147,51 @@
     }),
 
     methods: {
-      validate () {
-        
-        if (this.$refs.form.validate()) {
-          this.$router.push("/sample");        
-          this.snackbar = true
-        }
-        // this.$router.push("/search?"+this.foobar);
-        
+      validate () {//login        
+        if (this.$refs.form.validate()) { 
+          let user = {
+            email : this.email,
+            password : this.password
+          }
+          console.log('user info dispatched.... to vuex store');
+          console.log(user);          
+
+          this.$store.dispatch('login', user);
+            
+          // console.log('this is from Login.vue: user info:');
+          // console.log(this.$store.getters.getAuthUser);
+          // console.log(this.$store.getters.getAuthStatus);
+          // console.log(this.$store.getters.getAuthUser);
+
+
+          this.snackbar = true;
+        }        
       },
+
+
+      getLoginInfo(){
+        console.log('this is from Login.vue: user info:');
+        console.log(this.$store.getters.getAuthUser);
+        // this.axios.defaults.headers.common['Authorization'] = 'Bearer '+this.config.access_token;
+
+        // this.axios.get(this.uri+'/user')
+        //   .then((response)=>{                
+        //       console.log(response);
+              
+        //   }).catch((error)=>{
+        //       console.log(error);
+        //   });
+      },
+
       reset () {
         this.$refs.form.reset()
       },
       resetValidation () {
         this.$refs.form.resetValidation()
-      },
+      },     
     },
     created: function(){
-        let uri = 'http://localhost:8000/api/auth';
         
-        this.axios.get(uri+'/user')
-          .then((response)=>{
-              this.users = response.data;
-            console.log(response);
-            
-        }).catch((error)=>{
-            console.log('Error: '+ error);
-        });
-
-        // this.axios.post(uri+'/signup' ,{ 
-        //     name: 'abc'           ,
-        //     email	: 'abc@ab.cd',
-        //     password		: 'abcd',            
-        //     password_confirmation : 'abcd'
-        // }).then((response)=>{
-        //     console.log(response);
-            
-        // }).catch((error)=>{
-        //     console.log('Error: '+ error);
-        // });
-
-
-        this.axios.post(uri+'/login' ,{            
-            email	: 'abcd@ab.cd',
-            password		: 'abcd',            
-        }).then((response)=>{
-            console.log(response);
-            
-        }).catch((error)=>{
-            console.log('Error: '+ error);
-        });
     }
   }
 </script>
