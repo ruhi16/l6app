@@ -16,12 +16,12 @@
     export default {
         data(){
             return{
-
+                
             }
         },
         computed: {
-            ...mapState({ msg: 'message' }),
-            ...mapGetters({users: 'getUsers'})
+            ...mapState('testusers',{ msg: 'message' }),
+            ...mapGetters('testusers',{users: 'getUsers'})
         },
         // computed: {
         //     msg() { 
@@ -37,8 +37,10 @@
         //     }
         // }
         methods:{
-            ...mapActions({ updateMessage: 'updateMessageAction'}),
-            ...mapMutations(["addUser"])
+            ...mapActions('testusers', { updateMessage: 'updateMessageAction'}),
+            ...mapMutations('testusers', {addUser: 'addUserMutation'})
         }
+
+        // if the name of both methods in component and store are same, then we can use it as array of names
     }
 </script>

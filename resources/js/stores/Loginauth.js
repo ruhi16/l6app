@@ -1,101 +1,73 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
+export default{
+    namespaced: true,
 
-import Testusers from './Testusers';
-// import Loginauth from './Loginauth';
-
-Vue.use(Vuex);
-Vue.use(VueAxios, axios);
-
-const store = new Vuex.Store({
-
-    modules: {
-        testusers: Testusers,
-        // loginauth: Loginauth
-    },
-    state: {
+    state:{
         status: '',
         token: localStorage.getItem('token') || '',
-        user: {},
+        user: {}
     },
-    mutations: {
-        auth_request(state) {
+
+    mutations:{
+        auth_request(state){
             state.status = 'Loading....'
         },
-        auth_success(state, data) {
-            state.status = 'Success...';
+        auth_success(state, data){
+            state.status = 'Success...';            
             state.token = data.token;
             state.user = data.user;
             // console.log('this is from mutations: successfully data assigneed to vuex store state');
             // console.log(state.user.email);
         },
-        auth_refresh(state, data) {
-            state.status = 'Refreshed...';
+        auth_refresh(state, data){
+            state.status = 'Refreshed...';            
             state.user = data;
             console.log(state.status);
         },
-        auth_error(state) {
+        auth_error(state){
             state.status = 'Error...';
         },
-        auth_logout(state) {
+        auth_logout(state){
             state.status = '';
             state.token = '';
-            state.user = {};
+            state.user = { };
         },
     },
 
-
-    actions: {
-        login({
-            commit
-        }, user) {
+    actions:{
+        login({commit}, user){
+   
             // console.log('user received from vuex action: login()');
             // console.log(user);
-            return new Promise((resolve, reject) => {
-                axios({
-                    url: 'http://localhost:8000/api/auth/login',
-                    data: user,
-                    method: 'POST'
-                }).then((resp) => {
+            axios({
+                url: 'http://localhost:8000/api/auth/login',
+                data: user,
+                method: 'POST'
+            }).then((resp)=>{
+                
+                // console.log(resp);
+                const token = resp.data.access_token;
+                const user = resp.data.user;
+                localStorage.setItem('token', token);
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                
+                console.log('this is from action: response after successfull login, with user info:');
+                console.log(user);
+                commit('auth_success', {token, user});
+                // resolve(resp);
 
-                    // console.log(resp);
-                    const token = resp.data.access_token;
-                    const user = resp.data.user;
-                    localStorage.setItem('token', token);
-                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-
-                    console.log('this is from action: response after successfull login, with user info:');
-                    console.log(user);
-                    commit('auth_success', {
-                        token,
-                        user
-                    });
-                    resolve(resp);
-
-                }).catch((error) => {
-                    console.log('This is from action login: errors after unsuccessfull login')
-                    console.log(error);
-                    commit('auth_error');
-                    reject(error);
-                });
-
-
-            });
-
-
-
+            }).catch((error)=>{
+                console.log('This is from action login: errors after unsuccessfull login')
+                console.log(error);
+                commit('auth_error');
+            })
         },
-        refresh({
-            commit
-        }, token) {
+        refresh({ commit }, token){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             axios({
-                url: 'http://localhost:8000/api/auth/user',
+                url: 'http://localhost:8000/api/auth/user',                
                 method: 'GET'
             }).then((resp) => {
-                const user = resp.data;
+                const user = resp.data;                
                 commit('auth_refresh', user);
 
             }).catch((error) => {
@@ -105,9 +77,7 @@ const store = new Vuex.Store({
             })
         },
 
-        register({
-            commit
-        }, user) {
+        register({commit}, user) {
             console.log('user received from vuex action: register()');
             console.log(user);
             axios({
@@ -128,22 +98,16 @@ const store = new Vuex.Store({
             })
         },
 
-
-
-
-
-        logout({
-            commit
-        }, token) {
+        logout({ commit },token) {
             console.log('action:logout', token);
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             axios({
                 url: 'http://localhost:8000/api/auth/logout',
                 method: 'GET'
             }).then((resp) => {
-                console.log(resp.data);
+                console.log(resp.data); 
 
-
+                
             }).catch((error) => {
                 console.log('This is from action logout: errors after unsuccessfull logout')
                 console.log(error);
@@ -152,15 +116,15 @@ const store = new Vuex.Store({
             localStorage.removeItem('token');
             delete axios.defaults.headers.common['Authorization'];
             console.log('Logout Action Clicked');
-
+          
         },
-
+   
     },
-    getters: {
+    getters:{        
         user: state => {
             return state.user
         },
-        getAuthUser(state) {
+        getAuthUser(state){
             console.log(state.user);
             return state.user;
         },
@@ -172,6 +136,6 @@ const store = new Vuex.Store({
             return state.status;
         },
     }
-});
+};
 
-export default store;
+

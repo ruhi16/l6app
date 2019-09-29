@@ -38,3 +38,25 @@ const app = new Vue({
 
     // render: h => h(App)
 });
+
+
+router.beforeEach(
+    (to, from, next)=>{
+        if( to.matched.some(record => record.meta.forAuthUsers) ){            
+            if ( store.getters.getAuthToken ){                                
+                next();
+            }else{
+                next({path:'/login'});
+            }
+        }else if( to.matched.some(record => record.meta.forVisitors) ) {
+            if (store.getters.getAuthToken) {                
+                next({path: '/users'});
+            } else {
+                next();
+            }
+        }else{
+            console.log('router.beforeEach: not matched with any meta...');
+            next();
+        }
+    }
+);

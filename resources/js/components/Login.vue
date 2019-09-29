@@ -7,7 +7,7 @@
     max-width="800"
     class="mx-auto"
     >
-    <v-img
+      <v-img
         
         class="white--text"
         height="200px"
@@ -23,17 +23,6 @@
                 >
                 
                 <v-card-text>
-
-                  <!-- <v-text-field
-                    v-model="name"
-                    :counter="10"
-                    :rules="nameRules"
-                    label="Name"
-                    required
-                  ></v-text-field> -->
-                  
-
-
                   <v-text-field
                     v-model="email"
                     :rules="emailRules"
@@ -82,7 +71,7 @@
                     class="mr-4"
                     @click="validate"
                   >
-                    Register
+                    Login
                   </v-btn>
 
                   <v-btn                    
@@ -118,16 +107,11 @@
   export default {
     data: () => ({
       config: { },
+      user:{},
       uri : 'http://localhost:8000/api/auth',
       valid: true,
       show:false,
       snackbar:false,
-
-      // name: '',      
-      // nameRules: [
-      //   v => !!v || 'Name is required',
-      //   v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-      // ],
 
       email: '',
       emailRules: [
@@ -153,34 +137,35 @@
             email : this.email,
             password : this.password
           }
-          console.log('user info dispatched.... to vuex store');
-          console.log(user);          
+          // console.log('user info dispatched.... to vuex store');
+          // console.log(user);          
 
-          this.$store.dispatch('login', user);
-            
-          // console.log('this is from Login.vue: user info:');
-          // console.log(this.$store.getters.getAuthUser);
-          // console.log(this.$store.getters.getAuthStatus);
-          // console.log(this.$store.getters.getAuthUser);
-
+          this.$store.dispatch('login', user)
+              .then(response =>{
+                  this.$router.push('/users');   
+              })
 
           this.snackbar = true;
-        }        
+        }       
+
+
+        if( this.$store.getters.getAuthToken !== '' ) {
+          console.log('successful');
+        }else{
+          console.log('un-successful');
+        }
       },
 
 
       getLoginInfo(){
-        console.log('this is from Login.vue: user info:');
+        console.log('this is from Login.vue: user getLoginInfo:');
         console.log(this.$store.getters.getAuthUser);
-        // this.axios.defaults.headers.common['Authorization'] = 'Bearer '+this.config.access_token;
-
-        // this.axios.get(this.uri+'/user')
-        //   .then((response)=>{                
-        //       console.log(response);
-              
-        //   }).catch((error)=>{
-        //       console.log(error);
-        //   });
+        // console.log(this.$store.getters.user);
+        
+        // this.user = this.$store.getters
+        this.user = JSON.stringify(this.$store.getters.user)
+        console.log(this.user);
+        this.$store.dispatch('refresh', this.$store.getters.getAuthToken);
       },
 
       reset () {

@@ -1,22 +1,5 @@
 <template>
     <nav>
-        <!-- <v-toolbar >
-            <v-toolbar-side-icon class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
-            <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-            <v-toolbar-title class="text-uppercase grey--text">
-                <span class="font-weight-light">Todo</span>
-                <span>Ninja</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn>
-                <span>Sign Out</span>
-                <v-icon right>exit_to_app</v-icon>
-            </v-btn>
-        </v-toolbar> -->
-        
-    <!-- <v-card color="grey lighten-4" flat height="200px" tile> -->
-
     <v-toolbar dense float>
         <v-app-bar-nav-icon class="grey--text hidden-md-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
 
@@ -25,14 +8,18 @@
         <v-spacer></v-spacer>       
 
         <v-toolbar-items>
-            <v-btn text :to="{path:'/example'}">Example</v-btn>
-            <v-btn text :to="{path:'/sample'}">Sample</v-btn>
-            <v-btn text :to="{path:'/register'}">Register</v-btn>
-            <v-btn text :to="{path:'/register'}">User</v-btn>
-            <v-btn text :to="{path:'/login'}">Login</v-btn>
+
+            <v-btn text v-if='!hasAuth' :to="{path:'/example'}">Example</v-btn>
+            <v-btn text :to="{path:'/sample'}"      >Sample</v-btn>
+            <v-btn text :to="{path:'/registeruser'}">Register</v-btn>
+            <v-btn text :to="{path:'/users'}"       >User</v-btn>
+
+
+            <v-btn text v-if='!hasAuth' :to="{path:'/login'}">Login</v-btn>
+            <v-btn text v-else @click="logout">Logout</v-btn>
         </v-toolbar-items>
         
-        <template v-if="$vuetify.breakpoint.mdAndUp">
+        <!-- <template v-if="$vuetify.breakpoint.mdAndUp">
             <v-btn icon>
                 <v-icon>mdi-export-variant</v-icon>
             </v-btn>
@@ -42,7 +29,7 @@
             <v-btn icon>
                 <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
-        </template>
+        </template> -->
 
         <v-btn icon>
             <v-icon>mdi-dots-vertical</v-icon>
@@ -81,6 +68,8 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+
 export default {
     data(){
         return{
@@ -89,12 +78,30 @@ export default {
                 {title: 'Test 1', icon: 'mdi-watch', route:'/'},
                 {title: 'Test 2', icon: 'mdi-tennis', route:'/example'},
                 {title: 'Test 3', icon: 'mdi-mouse', route:'/sample'},
-            ]
+            ],
+            isAuth: true,
+        }
+    },
+    
+    methods:{
+        // ...mapActions('loginauth', { logout : 'logout'}),
+        // this.logout(this.$store.getters.getAuthToken);
+
+        logout(){
+            console.log('Logout Clicked');
+            this.$store.dispatch('logout', this.$store.getters.getAuthToken);            
         }
     },
     mounted() {
-        console.log('Navbar Mounted...');
-    }
+        // console.log('Navbar Mounted...');
+        // console.log(this.$root);
+    },
+    computed:{        
+        // ...mapGetters('loginauth', { hasAuth: 'getAuthToken' }),
+        hasAuth(){
+            return this.$store.getters.getAuthToken;
+        }
+    },
 }
 </script>
 <style scoped>

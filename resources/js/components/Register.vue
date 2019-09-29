@@ -2,80 +2,96 @@
     <v-container>         
         <h1>This is Register Component</h1>
          <v-row align="center">
-    
-            <v-form
-            ref="form"
-            v-model="valid"
-            :lazy-validation="lazy"
-            class='px-3'
-            >
-                <input type='text' :value="csrfToken" name="_token"/>
-                <v-text-field
-                    v-model="name"                    
-                    :counter="30"
-                    :rules="nameRules"
-                    prepend-icon="watch"
-                    label="Name"
-                    required
-                ></v-text-field>
+           <v-layout row wrap>
+
+
+   <v-card
+    max-width="800"
+    class="mx-auto"
+    >
+      <v-img
+        
+        class="white--text"
+        height="200px"
+        width="800px"
+        src="../assets/03.jpg"
+      >
+        <v-card-title class="align-end fill-height">New User Registration</v-card-title>
+      </v-img>
+                <v-form
+                  ref="form"
+                  v-model="valid"
+                  lazy-validation
+                >
                 
-                <v-text-field
-                    v-model="email"                    
+                <v-card-text>
+                  <v-text-field
+                    v-model="name"
+                    :counter="10"
+                    :rules="nameRules"
+                    label="Your Name"
+                    required
+                  ></v-text-field>
+                  
+                  <v-text-field
+                    v-model="email"
                     :rules="emailRules"
+                    label="E-mail"
+                    required
+                  ></v-text-field>
+
+                  <v-text-field
+                    v-model="password"
+                    :append-icon="show ? 'visibility' : 'visibility_off'"
+                    :rules="[passRules.required, passRules.min]"
+                    :type="show ? 'text' : 'password'"
+                    name="password"
                     prepend-icon="watch"
-                    label="E-mail"                    
-                    required
-                ></v-text-field>
+                    label="Password"
+                    hint="At least 4 characters"
+                    counter
+                    @click:append="show = !show"
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="password"
-                  :append-icon="show ? 'visibility' : 'visibility_off'"
-                  :rules="[passRules.required, passRules.min]"
-                  :type="show ? 'text' : 'password'"
-                  name="password"
-                  prepend-icon="watch"
-                  label="Password"
-                  hint="At least 4 characters"
-                  counter
-                  @click:append="show = !show"
-                ></v-text-field>
+                  
 
-                <v-checkbox
-                    v-model="checkbox"
-                    :rules="[v => !!v || 'You must check to continue!']"
-                    label="Remember Me"
-                    required
-                ></v-checkbox>
+            </v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>                  
 
-                <v-btn
+                  <v-btn
+                    color="error"
+                    class="mr-4"
+                    @click="reset"
+                  >
+                    Reset Form
+                  </v-btn>
+
+                  <v-btn
+                    color="warning"
+                    @click="resetValidation"
+                  >
+                    Reset Validation
+                  </v-btn>
+
+                  <v-btn                    
                     :disabled="!valid"
                     color="success"
                     class="mr-4"
                     @click="validate"
-                >
-                    Validate
-                </v-btn>
+                  >
+                    Register
+                  </v-btn>
+                 
 
-                <v-btn
-                    color="error"
-                    class="mr-4"
-                    @click="reset"
-                >
-                    Reset Form
-                </v-btn>
+            </v-card-actions>
+                </v-form>
 
-                <v-btn
-                    color="warning"
-                    @click="resetValidation"
-                >
-                    Reset Validation
-                </v-btn>
-            </v-form>
-        </v-row>
 
+      </v-card>          
 
       <v-snackbar v-model="snackbar">
-        Form Saved Successfully
+        {{ msgSnackbar }}
         <v-btn
           color="pink"
           text
@@ -84,6 +100,22 @@
           Close
         </v-btn>
       </v-snackbar>
+
+  </v-layout>
+
+
+
+
+        </v-row>
+
+
+      <v-snackbar v-model="snackbar" class="red--text">
+        Form Saved Successfully
+        <v-btn color="white--text" text @click="snackbar = false">
+          Close
+        </v-btn>
+      </v-snackbar>
+
     </v-container>
 </template>
 
@@ -92,11 +124,12 @@
     export default {
     data () {
       return{
-        
+        msgSnackbar:'',
         valid: true,
         show: false,
         snackbar: false,
-        name: '',
+
+        name: '',        
         nameRules: [
           v => !!v || 'Name is required',
           v => (v && v.length <= 30) || 'Name must be less than 30 characters',
@@ -115,12 +148,7 @@
           // min: v => /.+@.+\..+/.test(v) || 'Password must be valid',
         },
       select: null,
-    //   items: [
-    //     'Item 1',
-    //     'Item 2',
-    //     'Item 3',
-    //     'Item 4',
-    //   ],
+    
       checkbox: false,
       lazy: false,
       }
@@ -129,55 +157,16 @@
     methods: {
       validate () {
         if (this.$refs.form.validate()) {
-          console.log(this.name, this.email, this.password);
-          // const baseUrl = 'http://localhost/l6app/public/api/auth/';
-          // const header = {
-          //       'X-CSRF-TOKEN'     : this.csrfToken,
-          //       'Content-Type'     : 'application/json', 
-          //       'X-Requested-With' : 'XMLHttpRequest'
-          //     };
-          // const Parent = axios.create({baseUrl, header});
-          // class Http {} extends Parent;
-          // parent
-          Axios.post('http://l6test.herokuapp.com/api/auth/shinup', {
-                name	: this.name,
-                email	: this.email,
-                password		: this.password,
-                password_confirmation: this.password 
-          },{
-                'X-CSRF-TOKEN'     : this.csrfToken,
-                'Content-Type'     : 'application/json', 
-                'X-Requested-With' : 'XMLHttpRequest'
-              }).then(response => {
-            console.log(response);
-          }).catch(error => {
-            console.log(error);
-          });
+          console.log(this.name, this.email, this.password, this.csrfToken);
+          let user = {
+            name: this.name,
+            email : this.email,
+            password : this.password,
+            password_confirmation: this.password
+          }
+          this.$store.dispatch('register', user);
 
-          // Axios({            
-          //     method: 'post',
-          //     url: 'http://localhost/l6app/public/api/auth/signup',
-          //     headers: {
-            //     'X-CSRF-TOKEN'     : window.Laravel.csrfToken,
-          //       'Content-Type'     : 'application/json', 
-          //       'X-Requested-With' : 'XMLHttpRequest'
-          //     },
-          //     data:{
-          //       name	: this.name,
-          //       email	: this.email,
-          //       password		: this.password,
-          //       password_confirmation: this.password            
-          //     }
-          // this.Axios.post('http://localhost/l6app/public/api/auth/user' ,{
-          //   name	: this.name,
-          //   email	: this.email,
-          //   password		: this.password,
-          //   password_confirmation: this.password  
-          // }).then(response => {
-          //   console.log(response);
-          // }).catch(error => {
-          //   console.log(error);
-          // });
+          this.msgSnackbar = "User Registered Successfully!";
           this.snackbar = true;          
         }
       },
@@ -188,8 +177,8 @@
         this.$refs.form.resetValidation()
       },
     },
-    created() {
-        this.csrfToken = document.querySelector('meta[name="csrf-token"]').content
-    }
+      created() {
+          this.csrfToken = document.querySelector('meta[name="csrf-token"]').content
+      }
     }
 </script>

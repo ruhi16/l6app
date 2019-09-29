@@ -25,7 +25,7 @@
             {{-- <v-app color="grey" dark> --}}
                 {{-- <nav-bar></nav-bar> --}}
                 <Navbar></Navbar>
-                
+                {{--  <h1>This is Welcome Page</h1>  --}}
 
 
                 {{-- <router-link to="/example">Example Link</router-link>

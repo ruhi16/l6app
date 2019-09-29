@@ -7,22 +7,35 @@ import Login from './components/Login';
 
 export const routes = [{
         path: '/example',
-        component: Example
+        component: Example,
+        
     },
     {
         path: '/sample',
-        component: Sample
+        component: Sample, 
+        meta: {
+            forAuthUsers: true
+        }
     },
     {
         path: '/registeruser',
-        component: Register
+        component: Register,
+        meta:{
+            forVisitors: true
+        }
+        
     },
     {
         path: '/users',
-        component: Users
+        component: Users,
+        meta: {
+            forAuthUsers: true
+        }
+        
     },
     {
         path: '/login',
-        component: Login
+        component: Login,
+        
     }
 ];
