@@ -1,7 +1,7 @@
 <template>
     <nav>
-    <v-toolbar dense float>
-        <v-app-bar-nav-icon class="grey--text hidden-md-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-toolbar app dense float>
+        <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-toolbar-title>Title</v-toolbar-title>
         
@@ -9,7 +9,8 @@
 
         <v-toolbar-items>
 
-            <v-btn text v-if='!hasAuth' :to="{path:'/example'}">Example</v-btn>
+            <!-- <v-btn text v-if='!hasAuth' :to="{path:'/example'}">Example</v-btn> -->
+            <v-btn text :to="{path:'/sample/example'}"     >Example</v-btn>
             <v-btn text :to="{path:'/sample'}"      >Sample</v-btn>
             <v-btn text :to="{path:'/registeruser'}">Register</v-btn>
             <v-btn text :to="{path:'/users'}"       >User</v-btn>

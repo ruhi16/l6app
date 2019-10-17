@@ -20,6 +20,8 @@ const store = new Vuex.Store({
         token: localStorage.getItem('token') || '',
         user: {},
     },
+
+
     mutations: {
         auth_request(state) {
             state.status = 'Loading....'
@@ -27,9 +29,7 @@ const store = new Vuex.Store({
         auth_success(state, data) {
             state.status = 'Success...';
             state.token = data.token;
-            state.user = data.user;
-            // console.log('this is from mutations: successfully data assigneed to vuex store state');
-            // console.log(state.user.email);
+            state.user = data.user;            
         },
         auth_refresh(state, data) {
             state.status = 'Refreshed...';
@@ -48,11 +48,7 @@ const store = new Vuex.Store({
 
 
     actions: {
-        login({
-            commit
-        }, user) {
-            // console.log('user received from vuex action: login()');
-            // console.log(user);
+        login({commit}, user) {            
             return new Promise((resolve, reject) => {
                 axios({
                     url: 'http://localhost:8000/api/auth/login',
@@ -66,8 +62,8 @@ const store = new Vuex.Store({
                     localStorage.setItem('token', token);
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
-                    console.log('this is from action: response after successfull login, with user info:');
-                    console.log(user);
+                    // console.log('this is from action: response after successfull login, with user info:');
+                    // console.log(user);
                     commit('auth_success', {
                         token,
                         user
@@ -156,6 +152,8 @@ const store = new Vuex.Store({
         },
 
     },
+
+    
     getters: {
         user: state => {
             return state.user

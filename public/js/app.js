@@ -2125,9 +2125,10 @@ __webpack_require__.r(__webpack_exports__);
         // console.log(user);          
 
         this.$store.dispatch('login', user).then(function (response) {
+          _this.snackbar = true;
+
           _this.$router.push('/users');
         });
-        this.snackbar = true;
       }
 
       if (this.$store.getters.getAuthToken !== '') {
@@ -2141,8 +2142,8 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.$store.getters.getAuthUser); // console.log(this.$store.getters.user);
       // this.user = this.$store.getters
 
-      this.user = JSON.stringify(this.$store.getters.user);
-      console.log(this.user);
+      this.user = JSON.stringify(this.$store.getters.user); // console.log(this.user);
+
       this.$store.dispatch('refresh', this.$store.getters.getAuthToken);
     },
     reset: function reset() {
@@ -2167,6 +2168,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+//
 //
 //
 //
@@ -38963,10 +38965,10 @@ var render = function() {
     [
       _c(
         "v-toolbar",
-        { attrs: { dense: "", float: "" } },
+        { attrs: { app: "", dense: "", float: "" } },
         [
           _c("v-app-bar-nav-icon", {
-            staticClass: "grey--text hidden-md-and-up",
+            staticClass: "grey--text",
             on: {
               click: function($event) {
                 _vm.drawer = !_vm.drawer
@@ -38981,13 +38983,11 @@ var render = function() {
           _c(
             "v-toolbar-items",
             [
-              !_vm.hasAuth
-                ? _c(
-                    "v-btn",
-                    { attrs: { text: "", to: { path: "/example" } } },
-                    [_vm._v("Example")]
-                  )
-                : _vm._e(),
+              _c(
+                "v-btn",
+                { attrs: { text: "", to: { path: "/sample/example" } } },
+                [_vm._v("Example")]
+              ),
               _vm._v(" "),
               _c("v-btn", { attrs: { text: "", to: { path: "/sample" } } }, [
                 _vm._v("Sample")
@@ -92150,6 +92150,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_axios__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _components_Navbar_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Navbar.vue */ "./resources/js/components/Navbar.vue");
 /* harmony import */ var _components_carousel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/carousel */ "./resources/js/components/carousel.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
  // window.Vue = require('vue');
@@ -92183,32 +92189,58 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   vuetify: _vuetify__WEBPACK_IMPORTED_MODULE_3__["default"],
   router: router // render: h => h(App)
 
-});
-router.beforeEach(function (to, from, next) {
-  if (to.matched.some(function (record) {
-    return record.meta.forAuthUsers;
-  })) {
-    if (_stores_store__WEBPACK_IMPORTED_MODULE_4__["default"].getters.getAuthToken) {
-      next();
-    } else {
-      next({
-        path: '/login'
-      });
-    }
-  } else if (to.matched.some(function (record) {
-    return record.meta.forVisitors;
-  })) {
-    if (_stores_store__WEBPACK_IMPORTED_MODULE_4__["default"].getters.getAuthToken) {
-      next({
-        path: '/users'
-      });
-    } else {
-      next();
-    }
-  } else {
-    console.log('router.beforeEach: not matched with any meta...');
-    next();
+}); // router.beforeEach(
+//     (to, from, next)=>{
+//         if( to.matched.some(record => record.meta.forAuthUsers) ){            
+//             if ( store.getters.getAuthToken ){                                
+//                 next();
+//             }else{
+//                 next({path:'/login'});
+//             }
+//         }else if( to.matched.some(record => record.meta.forVisitors) ) {
+//             if (store.getters.getAuthToken) {                
+//                 next({path: '/users'});
+//             } else {
+//                 next();
+//             }
+//         }else{
+//             console.log('router.beforeEach: not matched with any meta...');
+//             next();
+//         }
+//     }
+// );
+
+function middlewarePipeline(context, middleware, index) {
+  var nextMiddleware = middleware[index];
+
+  if (!nextMiddleware) {
+    return context.next;
   }
+
+  return function () {
+    var nextPipeline = middlewarePipeline(context, middleware, index + 1);
+    nextMiddleware(_objectSpread({}, context, {
+      next: nextPipeline
+    }));
+  };
+}
+
+router.beforeEach(function (to, from, next) {
+  if (to.meta.middleware) {
+    console.log('This is Calling Middleware....');
+    var middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meata.middleare];
+    var context = {
+      to: to,
+      from: from,
+      next: next,
+      store: _stores_store__WEBPACK_IMPORTED_MODULE_4__["default"]
+    };
+    return middleware[0](_objectSpread({}, context, {
+      next: middlewarePipeline(context, middleware, 1)
+    })); // return next();
+  }
+
+  return next();
 });
 
 /***/ }),
@@ -92754,6 +92786,63 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/middleware/auth.js":
+/*!*****************************************!*\
+  !*** ./resources/js/middleware/auth.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return auth; });
+function auth(_ref) {
+  var next = _ref.next,
+      store = _ref.store;
+  console.log('Hello, I am from auth Middleware');
+  console.log(store.getters.getAuthToken ? store.getters.getAuthToken : 'Token is not Available');
+
+  if (!store.getters.getAuthToken) {
+    // console.log('Verified By auth, if no authToken, go to Login Page');
+    return next({
+      path: '/login'
+    });
+  }
+
+  return next();
+}
+
+/***/ }),
+
+/***/ "./resources/js/middleware/isSubscribed.js":
+/*!*************************************************!*\
+  !*** ./resources/js/middleware/isSubscribed.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return isSubscribed; });
+function isSubscribed(_ref) {
+  var next = _ref.next,
+      store = _ref.store;
+  console.log('Hello, I am from isSubscribed Middleware'); // console.log(store.getters.getAuthToken);
+
+  isSubscribed = false;
+
+  if (!isSubscribed) {
+    // console.log('Verified By isSubscribed, if no authToken, go to Login Page');
+    return next({
+      path: '/registeruser'
+    });
+  }
+
+  return next();
+}
+
+/***/ }),
+
 /***/ "./resources/js/routes.js":
 /*!********************************!*\
   !*** ./resources/js/routes.js ***!
@@ -92769,32 +92858,42 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Register__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Register */ "./resources/js/components/Register.vue");
 /* harmony import */ var _components_Users__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Users */ "./resources/js/components/Users.vue");
 /* harmony import */ var _components_Login__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Login */ "./resources/js/components/Login.vue");
+/* harmony import */ var _middleware_auth__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./middleware/auth */ "./resources/js/middleware/auth.js");
+/* harmony import */ var _middleware_isSubscribed__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./middleware/isSubscribed */ "./resources/js/middleware/isSubscribed.js");
+
+
 
 
 
 
 
 var routes = [{
-  path: '/example',
-  component: _components_ExampleComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
-}, {
   path: '/sample',
+  name: 'Sample',
   component: _components_SampleComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
   meta: {
-    forAuthUsers: true
-  }
+    middleware: [_middleware_auth__WEBPACK_IMPORTED_MODULE_5__["default"]]
+  },
+  children: [{
+    path: '/sample/example',
+    name: 'Sample.Example',
+    component: _components_ExampleComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    meta: {
+      middleware: [_middleware_auth__WEBPACK_IMPORTED_MODULE_5__["default"], _middleware_isSubscribed__WEBPACK_IMPORTED_MODULE_6__["default"]]
+    }
+  }]
 }, {
   path: '/registeruser',
-  component: _components_Register__WEBPACK_IMPORTED_MODULE_2__["default"],
-  meta: {
-    forVisitors: true
-  }
+  component: _components_Register__WEBPACK_IMPORTED_MODULE_2__["default"] // meta:{
+  //     forVisitors: true
+  // }
+
 }, {
   path: '/users',
-  component: _components_Users__WEBPACK_IMPORTED_MODULE_3__["default"],
-  meta: {
-    forAuthUsers: true
-  }
+  component: _components_Users__WEBPACK_IMPORTED_MODULE_3__["default"] // meta: {
+  //     forAuthUsers: true
+  // }
+
 }, {
   path: '/login',
   component: _components_Login__WEBPACK_IMPORTED_MODULE_4__["default"]
@@ -92897,8 +92996,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     auth_success: function auth_success(state, data) {
       state.status = 'Success...';
       state.token = data.token;
-      state.user = data.user; // console.log('this is from mutations: successfully data assigneed to vuex store state');
-      // console.log(state.user.email);
+      state.user = data.user;
     },
     auth_refresh: function auth_refresh(state, data) {
       state.status = 'Refreshed...';
@@ -92917,8 +93015,6 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   actions: {
     login: function login(_ref, user) {
       var commit = _ref.commit;
-      // console.log('user received from vuex action: login()');
-      // console.log(user);
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_2___default()({
           url: 'http://localhost:8000/api/auth/login',
@@ -92929,9 +93025,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           var token = resp.data.access_token;
           var user = resp.data.user;
           localStorage.setItem('token', token);
-          axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-          console.log('this is from action: response after successfull login, with user info:');
-          console.log(user);
+          axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + token; // console.log('this is from action: response after successfull login, with user info:');
+          // console.log(user);
+
           commit('auth_success', {
             token: token,
             user: user

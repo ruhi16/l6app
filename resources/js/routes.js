@@ -4,33 +4,41 @@ import Register from './components/Register';
 import Users from './components/Users';
 import Login from './components/Login';
 
+import auth from './middleware/auth';
+import isSubscribed from './middleware/isSubscribed';
 
-export const routes = [{
-        path: '/example',
-        component: Example,
-        
-    },
+
+export const routes = [
     {
         path: '/sample',
+        name: 'Sample',
         component: Sample, 
-        meta: {
-            forAuthUsers: true
-        }
+        meta: {            
+            middleware: [auth]
+        },
+        children:[{
+            path: '/sample/example',
+            name: 'Sample.Example',
+            component: Example,
+            meta:{
+                middleware:[auth, isSubscribed]
+            }
+        }]
     },
     {
         path: '/registeruser',
         component: Register,
-        meta:{
-            forVisitors: true
-        }
+        // meta:{
+        //     forVisitors: true
+        // }
         
     },
     {
         path: '/users',
         component: Users,
-        meta: {
-            forAuthUsers: true
-        }
+        // meta: {
+        //     forAuthUsers: true
+        // }
         
     },
     {

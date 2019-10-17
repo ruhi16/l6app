@@ -142,10 +142,12 @@
 
           this.$store.dispatch('login', user)
               .then(response =>{
+                  this.snackbar = true;
                   this.$router.push('/users');   
+                  
               })
 
-          this.snackbar = true;
+          
         }       
 
 
@@ -164,7 +166,7 @@
         
         // this.user = this.$store.getters
         this.user = JSON.stringify(this.$store.getters.user)
-        console.log(this.user);
+        // console.log(this.user);
         this.$store.dispatch('refresh', this.$store.getters.getAuthToken);
       },
 

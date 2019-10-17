@@ -40,23 +40,53 @@ const app = new Vue({
 });
 
 
-router.beforeEach(
-    (to, from, next)=>{
-        if( to.matched.some(record => record.meta.forAuthUsers) ){            
-            if ( store.getters.getAuthToken ){                                
-                next();
-            }else{
-                next({path:'/login'});
-            }
-        }else if( to.matched.some(record => record.meta.forVisitors) ) {
-            if (store.getters.getAuthToken) {                
-                next({path: '/users'});
-            } else {
-                next();
-            }
-        }else{
-            console.log('router.beforeEach: not matched with any meta...');
-            next();
-        }
+// router.beforeEach(
+//     (to, from, next)=>{
+//         if( to.matched.some(record => record.meta.forAuthUsers) ){            
+//             if ( store.getters.getAuthToken ){                                
+//                 next();
+//             }else{
+//                 next({path:'/login'});
+//             }
+//         }else if( to.matched.some(record => record.meta.forVisitors) ) {
+//             if (store.getters.getAuthToken) {                
+//                 next({path: '/users'});
+//             } else {
+//                 next();
+//             }
+//         }else{
+//             console.log('router.beforeEach: not matched with any meta...');
+//             next();
+//         }
+//     }
+// );
+
+function middlewarePipeline(context, middleware, index) {
+    const nextMiddleware = middleware[index];
+    if (!nextMiddleware) {
+        return context.next;
     }
-);
+    return () => {
+        const nextPipeline = middlewarePipeline(
+            context, middleware, index + 1
+        )
+        nextMiddleware({
+            ...context, next: nextPipeline
+        })
+    }
+}
+
+
+router.beforeEach( (to, from, next)=>{
+    if( to.meta.middleware ){
+        console.log('This is Calling Middleware....');
+        const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meata.middleare];
+        const context = {to, from, next, store};
+        return middleware[0]({
+            ...context, 
+            next: middlewarePipeline(context, middleware, 1)
+        });
+        // return next();
+    }
+    return next();
+});
